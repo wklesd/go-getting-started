@@ -1,1479 +1,1705 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<html><head><style type="text/css">
-
-body {
-	box-sizing: border-box;
-	font-family:sans-serif;
-	margin: 0;
-	background: #ccc;
-}
-
-/* Style the side navigation */
-.sidenav {
-	font-weight: bold;
-	width: 80px;
-	height: 100%;
-	position: fixed;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	background-color: #555;
-	overflow-x: hidden;
-}
-
-.sidenav a {
-	font-size: 14px;
-	color: white;
-	padding: 20px 1px;
-	text-align: center;
-	text-decoration: none;
-	display: block;
-}
-
-.content {
-	font-size: 13px;
-	font-weight: bold;
-	top: 0;
-	left: 0;
-	margin-left: 80px;
-	padding: 5px;
-	//background-color: #ddd;
-}
-
-.headline {
-	text-align: center;
-	font-family:sans-serif;
-	font-style: italic;
-	font-weight: bold;
-	padding: 2px;
-	color: white;
-	background-color: #f60;
-}
-
-input.ynum[type="text"] {
-	text-align: center;
-	background-color: #ffc;
-}
-
-input.snum[type="text"] {
-	text-align: center;
-	background-color: #fff;
-}
-
-input.wnum[type="text"] {
-	text-align: center;
-	background-color: #cce6ff;
-}
-
-textarea {
-	padding: 10px;
-	width:100%;
-	display: block;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.pos {
-	padding: 5px;
-}
-</style>
-<script>
-
-window.onload = function() {
-	byId("mlamp").click();
-}
-
-function byId(id) {
-	return document.getElementById(id);
-}
-
-function byClass(cls) {
-	return document.getElementsByClassName(cls);
-}
-
-function byName(name) {
-	return document.getElementsByName(name);
-}
-
-function byTag(tag) {
-	return document.getElementsByTagName(tag);
-}
-
-function reset() {
-	var xpos = byClass("ynum");
-	for (var i = 0; i < xpos.length; i++)
-		xpos[i].value = "";
-
-	xpos = byClass("snum");
-	for (var i = 0; i < xpos.length; i++)
-		xpos[i].value = "";
-
-	xpos = byClass("wnum");
-	for (var i = 0; i < xpos.length; i++)
-		xpos[i].value = "";
-
-	byTag('textarea')[0].value = "";
-}
-
-function setOrder() {
-	var xpos = {};
-	var xp = byClass("pos");
-	for (var i = 0; i < xp.length; i++) {
-		var xc = xp[i].getElementsByTagName('input');
-		for (var j = 0; j < xc.length; j++) {
-			var art = xc[j];
-			var n = parseInt(art.value)
-			if (n > 0) {
-				xpos[art.id] = n;
+<html>
+	<head>
+		<style type="text/css">
+			body {
+			box-sizing: border-box;
+			font-family:sans-serif;
+			margin: 0;
+			background: #ccc;
 			}
-		}
-	}
-	var order = '';
-	for (var key in xpos) {
-		order += key + "   " + xpos[key] + '\n';
-	}
-	byId('order').value = order;
-	setView('list');
-}
-
-
-function unselMenu(elem) {
-	elem.style.color = "#fff";
-	elem.style.background = "#555";
-}
-
-function selMenu(elem) {
-	elem.style.color = "#f60";
-	elem.style.background = "#333";
-}
-
-function setView(view) {
-	var i, content, items;
-
-	//set menu
-	items = byClass("item");
-	for (i = 0; i < items.length; i++)
-		unselMenu(items[i]);
-
-	selMenu(byId("m" + view));
-
-	//set content
-	content = byClass("content");
-	for (i = 0; i < content.length; i++)
-		content[i].style.display = "none";
-
-	byId(view).style.display = 'block';
-}
-
-function send() {
-	var email = byId('email').value;
-   	var subj = byId('contragent').value;
-	var body = encodeURIComponent(byId('order').value);
-	window.location.href = 'mailto:' + email + '?subject=' + subj + '&body=' + body;
-	reset();
-}
+			/* Style the side navigation */
+			.sidenav {
+			font-weight: bold;
+			width: 80px;
+			height: 100%;
+			position: fixed;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			background-color: #555;
+			overflow-x: hidden;
+			}
+			.sidenav a {
+			font-size: 14px;
+			color: white;
+			padding: 20px 1px;
+			text-align: center;
+			text-decoration: none;
+			display: block;
+			}
+			.content {
+			font-size: 13px;
+			font-weight: bold;
+			top: 0;
+			left: 0;
+			margin-left: 80px;
+			padding: 5px;
+			//background-color: #ddd;
+			}
+			.headline {
+			text-align: center;
+			font-family:sans-serif;
+			font-style: italic;
+			font-weight: bold;
+			padding: 2px;
+			color: white;
+			background-color: #f60;
+			}
+			input.ynum[type="text"] {
+			text-align: center;
+			background-color: #ffc;
+			}
+			input.snum[type="text"] {
+			text-align: center;
+			background-color: #fff;
+			}
+			input.wnum[type="text"] {
+			text-align: center;
+			background-color: #cce6ff;
+			}
+			textarea {
+			padding: 10px;
+			width:100%;
+			display: block;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			}
+			.pos {
+			padding: 5px;
+			}
+		</style>
+		<script>
+			//set default view
+			window.onload=function() {
+			  byId("mlamp").click();
+			}
 			
-</script>
-<title>заказ</title></head><body>
-
-<div class="sidenav">
-	<a class="item" id="mlist" href="#" onclick="setOrder()">Список</a>
-	<a class="item" id="mlamp" href="#" onclick="setView('lamp')">Лампы</a>
-	<a class="item" id="mflood" href="#" onclick="setView('flood')">Прож. и УО</a>
-	<a class="item" id="mpanel" href="#" onclick="setView('panel')">Панели и св-ки</a>
-	<a class="item" id="mcll" href="#" onclick="setView('cll')">Наст. потол.</a>
-	<a class="item" id="mdot" href="#" onclick="setView('dot')">Точка</a>
-	<a class="item" id="mchand" href="#" onclick="setView('chand')">Люстры</a>
-</div>
-
-<div class="content" id="list">
-	<textarea rows="22" id="order"></textarea>
-	<input type="text" id="email" value="spirina.l@wolta.ru;tsahilov.v@wolta.ru" 
-		style="margin: 10px 0 0 0; width: 95%; padding: 2px; display: block; text-align:center;">
-	<input type="text" id="contragent" value="Заказ - Прокопов" 
-		style="margin: 10px auto 0 auto; padding: 2px; display: block; text-align:center;">
-	<button id="reset" onclick="reset()" 
-		style="margin: 10px 25px; padding: 5px; width: 35%">Сбросить</button>
-	<button id="send" onclick="send()"
-		style="margin: 10px 0; padding: 5px; width: 35%">Отправить</button>
-</div>
-
-<div class="content" id="lamp">
-	<div class="headline">FILOMENT</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">Шарик 9вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BLFT9E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BLFT9E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GLFT7E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GLFT7E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GLFT7E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GLFT7E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Св. TWIST 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCTFT7E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Св. TWIST 7вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCTFT7E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">СНВ 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCDFT7E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SCDFT7E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCFT7E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SCFT7E14" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">ВАША ЛАМПА E14/E27 </div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">Шарик 15 E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL15E27-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL15E27-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 12 E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL12E27-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL12E27-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7.5 E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7.5E14-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7.5E14-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7.5 E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7.5E27-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7.5E27-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 7.5 E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC7.5E14-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC7.5E14-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 7.5 E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC7.5E27-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC7.5E27-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">СНВ 7.5 E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCD7.5E14-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SCD7.5E14-P" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">SIMPLE E14/E27</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">Шарик 12вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL12E27-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL12E27-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 6вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL6E14-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL6E14-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 6вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL6E27-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL6E27-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 6вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC6E14-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC6E14-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 6вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC6E27-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC6E27-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 4вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL4E14-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL4E14-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 4вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL4E27-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL4E27-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 4вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC4E14-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC4E14-S" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">WOLTA E14/E27/E40</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">HP 60вт E40</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP60E40" ></span></td>
-		</tr><tr>
-			<td><span class="name">HP 40вт E27/40</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP40E27/40" ></span></td>
-		</tr><tr>
-			<td><span class="name">HP 30вт E27/40</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP30E27/40" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 20вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y65BL20E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S65BL20E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 15вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL15E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL15E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 9вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y55BL9E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S55BL9E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 8вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL8E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL8E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 8вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL8E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL8E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Шарик 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 8вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC8E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC8E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 8вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC8E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC8E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Свеча 8вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC8E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SC8E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">39R 5вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y39R5E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S39R5E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">50R 7вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y50R7E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S50R7E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">63R 9вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y63R9E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S63R9E27" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">G4/G9/G13/GX53/GU5.3/GU10</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">T8 18вт G13</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25ST8-18G13" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="25WT8-18G13" ></span></td>
-		</tr><tr>
-			<td><span class="name">T8 10вт G13</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25ST8-10G13-R" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="25WT8-10G13-R" ></span></td>
-		</tr><tr>
-			<td><span class="name">MR16 8вт GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-8GU5.3" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-8GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MR16 7.5 GU5.3 P</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-7.5GU5.3-P" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-7.5GU5.3-P" ></span></td>
-		</tr><tr>
-			<td><span class="name">MR16 6вт GU5.3 S</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-6GU5.3-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-6GU5.3-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">MR16 3вт GU5.3 S</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-3GU5.3-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-3GU5.3-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">75R 7вт GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y75R7GX53" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S75R7GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">75R 4вт GX53 S</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y75R4GX53-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25S75R4GX53-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">PAR16 8вт GU10</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YPAR16-230-8GU10" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SPAR16-230-8GU10" ></span></td>
-		</tr><tr>
-			<td><span class="name">PAR16 3вт GU10 S</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YPAR16-230-3GU10-S" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SPAR16-230-3GU10-S" ></span></td>
-		</tr><tr>
-			<td><span class="name">JCD 5вт G9</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJCD-230-5G9" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SJCD-230-5G9" ></span></td>
-		</tr><tr>
-			<td><span class="name">JC 2.5вт G4</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJC-230-2.5G4" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SJC-230-2.5G4" ></span></td>
-		</tr><tr>
-			<td><span class="name">JC 12V 2.5вт G4</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJC-12-2.5G4" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="25SJC-12-2.5G4" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline" style="background-color: #444;">ЭНЕРГОСБЕРЕГАЮЩИЕ</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">Спираль 30вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP30E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP30E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 20вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP20E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP20E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 20вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP20E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP20E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 15вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP15E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP15E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 15вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP15E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP15E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 12вт E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP12E27" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP12E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Спираль 12вт E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP12E14" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP12E14" ></span></td>
-		</tr>
-	</table>
-</div>
-
-<div class="content" id="flood">
-	<div class="headline">УЛИЧНОЕ ОСВЕЩЕНИЕ</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">STL-50вт 01</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="STL-50W01" ></span></td>
-		</tr><tr>
-			<td><span class="name">STL-100вт 01</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="STL-100W01" ></span></td>
-		</tr><tr>
-			<td><span class="name">STL-150вт 01</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="STL-150W01" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">ПРОЖЕКТОРЫ 03</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">WFL-10W/03</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-10W/03" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-30W/03</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-30W/03" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">ПРОЖЕКТОРЫ 05</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">LFL-10/05</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-10/05" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-20/05</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-20/05" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-30/05</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-30/05" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-50/05</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-50/05" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-10/05s c датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-10/05s" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-20/05s c датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-20/05s" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-30/05s c датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-30/05s" ></span></td>
-		</tr><tr>
-			<td><span class="name">LFL-50/05s c датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-50/05s" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">ПРОЖЕКТОРЫ 06</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">WFL-10W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-10W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-20W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-20W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-30W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-30W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-50W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-50W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-100W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-100W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-150W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-150W/06" ></span></td>
-		</tr><tr>
-			<td><span class="name">WFL-200W/06</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-200W/06" ></span></td>
-		</tr>
-	</table>
-</div>
-
-<div class="content" id="panel">
-	<div class="headline">Светильник светодиодный Т5</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">LT5 4вт 30см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W4S30" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 6вт 30см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W6S30" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 10вт 60см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W10S60" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 12вт 90см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W10S90" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 16вт 90см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W16S90" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 16вт 120см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W14S120" ></span></td>
-		</tr><tr>
-			<td><span class="name">LT5 20вт 120см</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W20S120" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">Офисные светильники</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">LLF 18вт 02</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LLFS18W02" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LLFW18W02" ></span></td>
-		</tr><tr>
-			<td><span class="name">LLF 36вт 02</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LLFS36W02" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LLFW36W02" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">Светодиодные панели</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">LP 40вт серебр.</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LPD40W60" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LPC40W60" ></span></td>
-		</tr><tr>
-			<td><span class="name">LP 40вт белые(02)</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LPD40W60-02" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LPC40W60-02" ></span></td>
-		</tr><tr>
-			<td><span class="name">ULP 36вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ULPD36W60" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="ULPC36W60" ></span></td>
-		</tr><tr>
-			<td><span class="name">ULP 36вт 02</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ULPD36W60-02" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="ULPC36W60-02" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">Светильники с IP65</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">20вт 600мм</span></td>
-			<td></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LWP20-С" ></span></td>
-		</tr><tr>
-			<td><span class="name">40вт 1200мм</span></td>
-			<td></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LWP40-С" ></span></td>
-		</tr><tr>
-			<td><span class="name">LWP 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LWPS18W01" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LWPW18W01" ></span></td>
-		</tr><tr>
-			<td><span class="name">LWP 36вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LWPS36W01" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LWPW36W01" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">Светильники с IP54</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">Круг 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-RC" ></span></td>
-		</tr><tr>
-			<td><span class="name">Круг 12вт с датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-RCs" ></span></td>
-		</tr><tr>
-			<td><span class="name">Овал 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-OC" ></span></td>
-		</tr><tr>
-			<td><span class="name">Овал 12вт с датчиком</span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-OCs" ></span></td>
-		</tr>
-	</table>
-</div>
-
-<div class="content" id="cll">
-	<div class="headline">Настенно-потолочные</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">CLL02100W-Supernova</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL02100W-Supernova" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0260W-Supernova</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0260W-Supernova" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0260WRGB-Supernova</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0260WRGB-Supernova" ></span></td>
-		</tr><tr>
-			<td><span class="name">SN-DLL9W 630 lm</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SN-DLL9W" ></span></td>
-		</tr><tr>
-			<td><span class="name">SN-DLL24W 1800 lm</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SN-DLL24W" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0325W-Polaris</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0325W-Polaris" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0418W-Almaz</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0418W-Almaz" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0518W-Saphir</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0518W-Saphir" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0618W-Cave</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0618W-Cave" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">ANTIQUE</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C01 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C01 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C01 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">FIESTA</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C02 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C02 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C02 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">CLASSICA</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C03 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C03LLY12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C03LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C03LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C03 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C03LLY18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C03LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C03LLW18W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">SHELL</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C04 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW12W" disabled style="background-color: #ccc;" ></span></td>
-		</tr><tr>
-			<td><span class="name">C04 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW18W" disabled style="background-color: #ccc;" ></span></td>
-		</tr><tr>
-			<td><span class="name">C04 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW24W" disabled style="background-color: #ccc;" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">SALUTE</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C05 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C05 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C05 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">STARTREK</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C06 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C06 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C06 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">JUNGLE</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C07 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS12W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C07 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS18W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C07 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS24W" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">KVAZAR</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">C10 12вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS12W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW12W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C10 18вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS18W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW18W" ></span></td>
-		</tr><tr>
-			<td><span class="name">C10 24вт</span></td>
-			<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS24W" disabled style="background-color: #ccc;" ></span></td>
-			<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW24W" ></span></td>
-		</tr>
-	</table>
-
-	<div class="headline">СПОТЫ</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">BIRD-WL40G9-1BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="BIRD-WL40G9-1BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">BIRD-CL40G9-3BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="BIRD-CL40G9-3BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">SPOT01-CLL5W-BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT01-CLL5W-BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">SPOT02-CLL10W-BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT02-CLL10W-BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">SPOT02-CLL10W-WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT02-CLL10W-WH" ></span></td>
-		</tr>
-	</table>
-</div>
-
-<div class="content" id="dot">
-	<div class="headline">Точечные светильники</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">ALUM01CH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM01CH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM01WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM01WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM02GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM02GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM03WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM03WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM04BL-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04BL-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM04GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM04SV-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04SV-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM04WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM05BL-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05BL-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM05CH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05CH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">ALUM05GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT108BR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT108BR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT108CR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT108CR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT530PP-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT530PP-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT583CR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT583CR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT583GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT583GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT716CR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT716CR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">CT716GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CT716GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01AB-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01AB-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01CH-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01CH-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01GD-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GD-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01GDM-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GDM-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01GM-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GM-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01NL-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01NL-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01WH-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01WH-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ01WH-GX53SLIM</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01WH-GX53SLIM" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ02CH-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ02CH-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ03CHNL-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ03CHNL-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ04CH-DL50GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ04CH-DL50GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DJ05CH-DL20GX53</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DJ05CH-DL20GX53" ></span></td>
-		</tr><tr>
-			<td><span class="name">DLUSCH-DLL5W</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSCH-DLL5W" ></span></td>
-		</tr><tr>
-			<td><span class="name">DLUSNL-DLL5W</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSNL-DLL5W" ></span></td>
-		</tr><tr>
-			<td><span class="name">DLUSWH-DLL5W</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSWH-DLL5W" ></span></td>
-		</tr><tr>
-			<td><span class="name">KDARGD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="KDARGD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">KDARWH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="KDARWH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">KDOGD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="KDOGD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">KDOSL-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="KDOSL-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">KDOWH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="KDOWH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">LED01-DLL3W</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LED01-DLL3W" ></span></td>
-		</tr><tr>
-			<td><span class="name">LUM01BL-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LUM01BL-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">LUM01WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LUM01WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD01BR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD01BR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD01GD-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD01GD-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD02BR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD02BR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD02CH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD02CH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD03WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD03WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">MOD04BR-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="MOD04BR-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">SILV01CH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SILV01CH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">SILV03CH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SILV03CH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">SILV03WH-DL50GU5.3</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SILV03WH-DL50GU5.3" ></span></td>
-		</tr><tr>
-			<td><span class="name">3D-DL40G9-RD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DL40G9-RD" ></span></td>
-		</tr><tr>
-			<td><span class="name">3D-DL40G9-SQ</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DL40G9-SQ" ></span></td>
-		</tr><tr>
-			<td><span class="name">3D-DLL35GU5.3-RD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DLL35GU5.3-RD" ></span></td>
-		</tr>
-	</table>
-</div>
-
-<div class="content" id="chand">
-	<div class="headline">Люстры и светильники</div>
-	<table>
-		<col width="300px"/>
-		<tr>
-			<td><span class="name">3D03-PL40E27MC</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="3D03-PL40E27MC" ></span></td>
-		</tr><tr>
-			<td><span class="name">Alegria-PL50GU10-3BG</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Alegria-PL50GU10-3BG" ></span></td>
-		</tr><tr>
-			<td><span class="name">Alta-CL60E27*2FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Alta-CL60E27*2FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Alta-CL60E27*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Alta-CL60E27*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Anessi-CL60E14*5AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-CL60E14*5AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Anessi-CL60E14*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-CL60E14*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Anessi-WL60E14*1AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*1AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Anessi-WL60E14*1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Anessi-WL60E14*2WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*2WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Angle-CL60E27*2CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Angle-CL60E27*2CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Angle-CL60E27*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Angle-CL60E27*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Ascona-CL60E27*3SL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Ascona-CL60E27*3SL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Ascona-CL60E27*5SL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Ascona-CL60E27*5SL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Asti-CL40E27*5GDM</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Asti-CL40E27*5GDM" ></span></td>
-		</tr><tr>
-			<td><span class="name">Aura-CL40E27-3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Aura-CL40E27-3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Aura-CL40E27-5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Aura-CL40E27-5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Bern-CL60E27*2FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Bern-CL60E27*2FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Bern-CL60E27*3FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Bern-CL60E27*3FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Bili-CL60E27*3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Bili-CL60E27*3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Bili-CL60E27*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Bili-CL60E27*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Bozhur-CL60E14*3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Bozhur-CL60E14*3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Brilliant-CL60E14-5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Brilliant-CL60E14-5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Cafetero-CL40E27-1BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Cafetero-CL40E27-1BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Cage-PL40E27*1BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Cage-PL40E27*1BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Cage-PL40E27*1GDM</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Cage-PL40E27*1GDM" ></span></td>
-		</tr><tr>
-			<td><span class="name">Chester- WL60E14*1AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Chester- WL60E14*1AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Chineli-CL60E14*2GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Chineli-CL60E14*2GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Christi-CL60E14*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Christi-CL60E14*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Christi-CL60E14*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Christi-CL60E14*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Classica-CL60E14*5AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Classica-CL60E14*5AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Classica-WL60E14*1AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Classica-WL60E14*1AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLC0070260E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0070260E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLC0140360E14GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0140360E14GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLC0150360E27GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150360E27GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLC0150360E27WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150360E27WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLC0150560E27GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150560E27GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0010160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0010160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0010560E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0010560E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0020360E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0020360E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0030160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0030160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0040160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0040160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLG0060160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0060160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLK0010560E14GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLK0010560E14GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0050560E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0050560E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0070460E14/E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0070460E14/E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLL0100620G4</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0100620G4" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLM0020340E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLM0020340E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">CLM0030340E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="CLM0030340E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Cup-PL40E27*1AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Cup-PL40E27*1AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Cup-PL40E27*1AC</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Cup-PL40E27*1AC" ></span></td>
-		</tr><tr>
-			<td><span class="name">Dracula-CL40E27-5BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Dracula-CL40E27-5BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Foris-CL60E27*3FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Foris-CL60E27*3FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Foris-CL60E27*5FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Foris-CL60E27*5FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Fra-CL60E14*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-CL60E14*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Fra-CL60E14*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-CL60E14*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Fra-Wl60E14*1CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-Wl60E14*1CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Geneva-CL60E14*3FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Geneva-CL60E14*3FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Geneva-CL60E14*5FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Geneva-CL60E14*5FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Gera-CL60E14*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-CL60E14*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Gera-CL60E14*6CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-CL60E14*6CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Gera-Wl60E14*1CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-Wl60E14*1CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Grace-WL60E27*1CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Grace-WL60E27*1CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Gracia-CL60E14*3AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Gracia-CL60E14*3AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Gracia-CL60E14*5AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Gracia-CL60E14*5AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Kadri-CL60E27*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Kadri-CL60E27*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Kadri-CL60E27*4CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Kadri-CL60E27*4CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Kotika-CL60E14*4AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Kotika-CL60E14*4AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Kotika-CL60E14*5AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Kotika-CL60E14*5AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Linci-CL60E14*3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-CL60E14*3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Linci-CL60E14*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-CL60E14*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Linci-WL60E14*1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-WL60E14*1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Lines-PL40E27*1BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Lines-PL40E27*1BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Loris-CL60E27*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Loris-CL60E27*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Loris-WL60E27*1CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Loris-WL60E27*1CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Luch-CL40E14-1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Luch-CL40E14-3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Luch-CL40E14-5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Luch-PL40E14-3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-PL40E14-3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">LUCKY-CL60E14*3BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LUCKY-CL60E14*3BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">LUCKY-CL60E14*5BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="LUCKY-CL60E14*5BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Luvr-CL60E14*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Luvr-CL60E14*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Mariposa-CL40E14-4WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Mariposa-CL40E14-4WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Milano-CL60E14*6WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Milano-CL60E14*6WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Moldi-CL60E27*2FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Moldi-CL60E27*2FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Moldi-CL60E27*3FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Moldi-CL60E27*3FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Mona-CL60E27*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-CL60E27*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Mona-CL60E27*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-CL60E27*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Mona-WL60E27*1CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-WL60E27*1CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Neti-PL60E27*1BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Neti-PL60E27*1BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">OREON01-CL60E27*2WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="OREON01-CL60E27*2WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">OREON02-CL60E27*2BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="OREON02-CL60E27*2BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">OREON03-CL60E27*2BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="OREON03-CL60E27*2BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLA0020360E14A</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLA0020360E14A" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLA0040160E27WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLA0040160E27WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLM0040160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0040160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLM0050160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0050160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLM0060160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0060160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLM0070160E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0070160E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">PLR0010340E14</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="PLR0010340E14" ></span></td>
-		</tr><tr>
-			<td><span class="name">Princes-CL60E14*3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Princes-CL60E14*3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Princes-CL60E14*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Princes-CL60E14*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Prison-PL60E27*1BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Prison-PL60E27*1BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rafaelo-CL60E14*5GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rafaelo-CL60E14*5GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rafaelo-WL60E14*2GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rafaelo-WL60E14*2GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Riki-CL60E27*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Riki-CL60E27*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Riki-WL60E27*1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Riki-WL60E27*1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier01-PL60E27*1BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier01-PL60E27*1BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier01-PL60E27*1GR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1GR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier01-PL60E27*1OR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1OR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier01-PL60E27*1PN</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1PN" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier02-PL60E27*1RD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier02-PL60E27*1RD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier02-PL60E27*1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier02-PL60E27*1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier03-PL60E27*1OR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier03-PL60E27*1OR" ></span></td>
-		</tr><tr>
-			<td><span class="name">Rivier03-PL60E27*1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier03-PL60E27*1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Romance-CL60E27-5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Romance-CL60E27-5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Romance-WL60E27-1WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Romance-WL60E27-1WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Salta-CL60E27*1FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Salta-CL60E27*1FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Salta-CL60E27*2FGD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Salta-CL60E27*2FGD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Santafe-CL60E27*3WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Santafe-CL60E27*3WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Santafe-CL60E27*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Santafe-CL60E27*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Servi-PL60E27*1BR</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Servi-PL60E27*1BR" ></span></td>
-		</tr><tr>
-			<td><span class="name">SHOT CLC01660E27</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="SHOT CLC01660E27" ></span></td>
-		</tr><tr>
-			<td><span class="name">Simple-CL40E14*3WN</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Simple-CL40E14*3WN" ></span></td>
-		</tr><tr>
-			<td><span class="name">Simple-CL40E14*5WN</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Simple-CL40E14*5WN" ></span></td>
-		</tr><tr>
-			<td><span class="name">Sphera-CL60E14*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Sphera-CL60E14*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Spiri-CL60E14*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Spiri-CL60E14*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Spiri-CL60E14*5CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Spiri-CL60E14*5CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Tuluza-CL60E14*2CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Tuluza-CL60E14*2CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Tuluza-CL60E14*3CH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Tuluza-CL60E14*3CH" ></span></td>
-		</tr><tr>
-			<td><span class="name">Valloni-CL60E27*2AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Valloni-CL60E27*2AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Valloni-CL60E27*3AB</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Valloni-CL60E27*3AB" ></span></td>
-		</tr><tr>
-			<td><span class="name">Velis-CL60E27*3BG</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Velis-CL60E27*3BG" ></span></td>
-		</tr><tr>
-			<td><span class="name">Velis-WL60E27*2BG</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Velis-WL60E27*2BG" ></span></td>
-		</tr><tr>
-			<td><span class="name">Vida-PL40E27-1CP</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Vida-PL40E27-1CP" ></span></td>
-		</tr><tr>
-			<td><span class="name">Vida-PL40E27-3CP</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Vida-PL40E27-3CP" ></span></td>
-		</tr><tr>
-			<td><span class="name">Viki-CL60E14*5WH</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Viki-CL60E14*5WH" ></span></td>
-		</tr><tr>
-			<td><span class="name">WLF0030160E14PBL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WLF0030160E14PBL" ></span></td>
-		</tr><tr>
-			<td><span class="name">WLK0010260E14GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="WLK0010260E14GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Zephyr-CL40E27-5BL</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Zephyr-CL40E27-5BL" ></span></td>
-		</tr><tr>
-			<td><span class="name">Zola-CL60E27*5GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Zola-CL60E27*5GD" ></span></td>
-		</tr><tr>
-			<td><span class="name">Zola-WL60E27*1GD</span></td>
-			<td><span class="pos"><input type="text" size="1" class="snum" id="Zola-WL60E27*1GD" ></span></td>
-		</tr>
-	</table>
-</div>
-</body></html>
+			function byId(id) {
+			  return document.getElementById(id);
+			} 
+			
+			function byClass(cls) {
+			  return document.getElementsByClassName(cls);
+			}
+			
+			function byName(name) {
+			  return document.getElementsByName(name);
+			}
+			
+			function byTag(tag) {
+			  return document.getElementsByTagName(tag);
+			}
+			
+			function reset() {
+			  var xpos = byClass("ynum");
+			  for (var i = 0; i<xpos.length; i++)
+			      xpos[i].value = "";
+			  xpos = byClass("snum");
+			  for (var i = 0; i<xpos.length; i++)
+			      xpos[i].value = "";
+			  xpos = byClass("wnum");
+			  for (var i = 0; i<xpos.length; i++)
+			      xpos[i].value = "";
+			  byTag('textarea')[0].value = "";
+			}
+			
+			function setOrder() {
+			  var xpos={};
+			  var xp = byClass("pos");
+			  for (var i=0; i<xp.length; i++) {
+			    var xc = xp[i].getElementsByTagName('input');
+			    for (var j=0; j<xc.length; j++) {
+			      var art = xc[j];
+			      var n = parseInt(art.value)
+			      if (n>0) {
+			        xpos[art.id] = n;
+			      }
+			    }
+			  }
+			  var order = '';
+			  for (var key in xpos) {
+			    order += key + "   " + xpos[key] + '\n';
+			  }
+			  byId('order').value = order;
+			  setView('list');
+			}
+			
+			
+			function unselMenu(elem) {
+			  elem.style.color = "#fff";
+			  elem.style.background = "#555";
+			}
+			
+			function selMenu(elem) {
+			  elem.style.color = "#f60";
+			  elem.style.background = "#333";
+			}
+			
+			function setView(view) {
+			  var i, content, items;
+			
+			  //set menu
+			  items = byClass("item");
+			  for (i = 0; i < items.length; i++) 
+			    unselMenu(items[i]);
+			
+			  selMenu(byId("m"+view));  
+			
+			  //set content
+			  content = byClass("content");
+			  for (i = 0; i < content.length; i++)
+			    content[i].style.display = "none";
+			
+			  byId(view).style.display = 'block';
+			}
+			
+			function send() {
+			  var email = byId('email').value;
+			  var subj = byId('contragent').value;
+			  var body = encodeURIComponent(byId('order').value);
+			  window.location.href = 'mailto:'+ email + '?subject=' + subj + '&body=' + body;
+			  reset();
+			}
+			
+		</script>
+		<title>заказ</title>
+	</head>
+	<body>
+		<div class="sidenav">
+			<a class="item" id="mlist" href="#" onclick="setOrder()">Список</a>
+			<a class="item" id="mlamp" href="#" onclick="setView('lamp')">Лампы</a>
+			<a class="item" id="mflood" href="#" onclick="setView('flood')">Прож. и УО</a>
+			<a class="item" id="mpanel" href="#" onclick="setView('panel')">Панели и св-ки</a>
+			<a class="item" id="mcll" href="#" onclick="setView('cll')">Наст. потол.</a>
+			<a class="item" id="mdot" href="#" onclick="setView('dot')">Точка</a>
+			<a class="item" id="mchand" href="#" onclick="setView('chand')">Люстры</a>
+		</div>
+		<div class="content" id="list">
+			<textarea rows="22" id="order"></textarea>
+			<input type="text" id="email" value="spirina.l@wolta.ru;tsahilov.v@wolta.ru" 
+				style="margin: 10px 0 0 0; width: 95%; padding: 2px; display: block; text-align:center;">
+			<input type="text" id="contragent" value="Заказ - Прокопов" 
+				style="margin: 10px auto 0 auto; padding: 2px; display: block; text-align:center;">
+			<button id="reset" onclick="reset()" 
+				style="margin: 10px 25px; padding: 5px; width: 35%">Сбросить</button>
+			<button id="send" onclick="send()"
+				style="margin: 10px 0; padding: 5px; width: 35%">Отправить</button>
+		</div>
+		<div class="content" id="lamp">
+			<div class="headline">FILOMENT</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">Шарик 9вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BLFT9E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BLFT9E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 7вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GLFT7E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GLFT7E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 7вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GLFT7E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GLFT7E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Св. TWIST 7вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCTFT7E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Св. TWIST 7вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCTFT7E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">СНВ 7вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCDFT7E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SCDFT7E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 7вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCFT7E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SCFT7E14" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">ВАША ЛАМПА E14/E27 </div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">Шарик 15 E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL15E27-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL15E27-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 12 E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL12E27-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL12E27-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 7.5 E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7.5E14-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7.5E14-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 7.5 E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL7.5E27-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL7.5E27-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 7.5 E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC7.5E14-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC7.5E14-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 7.5 E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC7.5E27-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC7.5E27-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">СНВ 7.5 E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YCD7.5E14-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SCD7.5E14-P" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">SIMPLE E14/E27</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">Шарик 12вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL12E27-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 6вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL6E14-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL6E14-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 6вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL6E27-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL6E27-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 6вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC6E27-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC6E27-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 4вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC4E14-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC4E14-S" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">WOLTA E14/E27/E40</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">HP 60вт E40</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP60E40" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">HP 40вт E27/40</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP40E27/40" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">HP 30вт E27/40</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="25WHP30E27/40" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 20вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y65BL20E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S65BL20E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 15вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y60BL15E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S60BL15E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 9вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y55BL9E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S55BL9E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 8вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL8E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL8E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Шарик 8вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y45GL8E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S45GL8E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 8вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC8E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC8E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Свеча 8вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YC8E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SC8E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">39R 5вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y39R5E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S39R5E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">50R 7вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y50R7E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S50R7E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">63R 9вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y63R9E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S63R9E27" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">G4/G9/G13/GX53/GU5.3/GU10</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">T8 18вт G13</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25ST8-18G13" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="25WT8-18G13" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">T8 10вт G13</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25ST8-10G13-R" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="25WT8-10G13-R" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MR16 8вт GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-8GU5.3" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-8GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MR16 7.5 GU5.3 P</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-7.5GU5.3-P" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-7.5GU5.3-P" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MR16 6вт GU5.3 S</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-6GU5.3-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-6GU5.3-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MR16 3вт GU5.3 S</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YMR16-220-3GU5.3-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SMR16-220-3GU5.3-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">75R 7вт GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y75R7GX53" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S75R7GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">75R 4вт GX53 S</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25Y75R4GX53-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25S75R4GX53-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PAR16 8вт GU10</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YPAR16-230-8GU10" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SPAR16-230-8GU10" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PAR16 3вт GU10 S</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YPAR16-230-3GU10-S" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SPAR16-230-3GU10-S" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">JCD 5вт G9</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJCD-230-5G9" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SJCD-230-5G9" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">JC 2.5вт G4</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJC-230-2.5G4" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SJC-230-2.5G4" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">JC 12V 2.5вт G4</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="25YJC-12-2.5G4" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="25SJC-12-2.5G4" ></span></td>
+				</tr>
+			</table>
+			<div class="headline" style="background-color: #444;">ЭНЕРГОСБЕРЕГАЮЩИЕ</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">Спираль 20вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP20E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP20E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Спираль 20вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP20E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP20E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Спираль 15вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP15E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Спираль 15вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP15E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP15E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Спираль 12вт E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP12E27" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP12E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Спираль 12вт E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="10YFSP12E14" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="10SFSP12E14" ></span></td>
+				</tr>
+			</table>
+		</div>
+		<div class="content" id="flood">
+			<div class="headline">УЛИЧНОЕ ОСВЕЩЕНИЕ</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">STL-50вт 01</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="STL-50W01" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">STL-100вт 01</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="STL-100W01" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">STL-150вт 01</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="STL-150W01" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">ПРОЖЕКТОРЫ 03</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">WFL-10W/03</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-10W/03" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">ПРОЖЕКТОРЫ 05</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">LFL-10/05</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-10/05" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-20/05</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-20/05" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-30/05</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-30/05" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-50/05</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-50/05" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-10/05s c датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-10/05s" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-20/05s c датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-20/05s" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-30/05s c датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-30/05s" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LFL-50/05s c датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LFL-50/05s" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">ПРОЖЕКТОРЫ 06</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">WFL-10W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-10W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-20W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-20W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-30W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-30W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-50W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-50W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-100W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-100W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-150W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-150W/06" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WFL-200W/06</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WFL-200W/06" ></span></td>
+				</tr>
+			</table>
+		</div>
+		<div class="content" id="panel">
+			<div class="headline">Светильник светодиодный Т5</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">LT5 4вт 30см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W4S30" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 6вт 30см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W6S30" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 10вт 60см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W10S60" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 12вт 90см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W10S90" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 16вт 90см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W16S90" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 16вт 120см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W14S120" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LT5 20вт 120см</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LT5W20S120" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">Офисные светильники</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">LLF 18вт 02</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LLFS18W02" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LLFW18W02" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LLF 36вт 02</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LLFS36W02" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LLFW36W02" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">Светодиодные панели</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">LP 40вт серебр.</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LPD40W60" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LPC40W60" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LP 40вт белые(02)</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LPD40W60-02" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LPC40W60-02" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ULP 36вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ULPD36W60" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="ULPC36W60" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ULP 36вт 02</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ULPD36W60-02" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="ULPC36W60-02" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">Светильники с IP65</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">20вт 600мм</span></td>
+					<td></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LWP20-С" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">40вт 1200мм</span></td>
+					<td></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LWP40-С" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LWP 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LWPS18W01" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LWPW18W01" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LWP 36вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LWPS36W01" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LWPW36W01" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">Светильники с IP54</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">Круг 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-RC" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Круг 12вт с датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-RCs" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Овал 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-OC" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Овал 12вт с датчиком</span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="LCL12-OCs" ></span></td>
+				</tr>
+			</table>
+		</div>
+		<div class="content" id="cll">
+			<div class="headline">Настенно-потолочные</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">CLL02100W-Supernova</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL02100W-Supernova" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0260W-Supernova</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0260W-Supernova" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0260WRGB-Supernova</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0260WRGB-Supernova" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SN-DLL9W 630 lm</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SN-DLL9W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SN-DLL24W 1800 lm</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SN-DLL24W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0325W-Polaris</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0325W-Polaris" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0418W-Almaz</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0418W-Almaz" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0518W-Saphir</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0518W-Saphir" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0618W-Cave</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0618W-Cave" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">ANTIQUE</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C01 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C01 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C01 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C01LLY24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C01LLS24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C01LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">FIESTA</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C02 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C02 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C02 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C02LLY24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C02LLS24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C02LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">CLASSICA</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C03 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C03LLY12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C03LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C03LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C03 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C03LLY18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C03LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C03LLW18W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">SHELL</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C04 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW12W" disabled style="background-color: #ccc;" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C04 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW18W" disabled style="background-color: #ccc;" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C04 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C04LLY24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C04LLS24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C04LLW24W" disabled style="background-color: #ccc;" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">SALUTE</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C05 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C05 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C05 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C05LLY24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C05LLS24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C05LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">STARTREK</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C06 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C06 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C06 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C06LLY24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C06LLS24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C06LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">JUNGLE</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C07 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS12W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C07 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS18W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C07 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C07LLY24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C07LLS24W" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C07LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">KVAZAR</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">C10 12вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS12W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW12W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C10 18вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS18W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW18W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">C10 24вт</span></td>
+					<td><span class="pos"><input type="text" size="1" class="ynum" id="C10LLY24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="C10LLS24W" disabled style="background-color: #ccc;" ></span></td>
+					<td><span class="pos"><input type="text" size="1" class="wnum" id="C10LLW24W" ></span></td>
+				</tr>
+			</table>
+			<div class="headline">СПОТЫ</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">BIRD-WL40G9-1BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="BIRD-WL40G9-1BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">BIRD-CL40G9-3BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="BIRD-CL40G9-3BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SPOT01-CLL5W-BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT01-CLL5W-BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SPOT02-CLL10W-BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT02-CLL10W-BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SPOT02-CLL10W-WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SPOT02-CLL10W-WH" ></span></td>
+				</tr>
+			</table>
+		</div>
+		<div class="content" id="dot">
+			<div class="headline">Точечные светильники</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">ALUM01CH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM01CH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM01WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM01WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM02GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM02GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM03WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM03WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM04BL-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04BL-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM04GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM04SV-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04SV-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM04WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM04WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM05BL-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05BL-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM05CH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05CH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">ALUM05GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="ALUM05GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT108BR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT108BR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT108CR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT108CR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT530PP-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT530PP-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT583CR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT583CR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT583GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT583GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT716CR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT716CR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CT716GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CT716GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01AB-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01AB-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01CH-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01CH-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01GD-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GD-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01GDM-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GDM-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01GM-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01GM-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01NL-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01NL-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01WH-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01WH-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ01WH-GX53SLIM</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ01WH-GX53SLIM" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ02CH-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ02CH-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ03CHNL-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ03CHNL-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ04CH-DL50GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ04CH-DL50GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DJ05CH-DL20GX53</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DJ05CH-DL20GX53" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DLUSCH-DLL5W</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSCH-DLL5W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DLUSNL-DLL5W</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSNL-DLL5W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">DLUSWH-DLL5W</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="DLUSWH-DLL5W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">KDARGD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="KDARGD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">KDARWH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="KDARWH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">KDOGD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="KDOGD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">KDOSL-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="KDOSL-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">KDOWH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="KDOWH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LED01-DLL3W</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LED01-DLL3W" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LUM01BL-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LUM01BL-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LUM01WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LUM01WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD01BR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD01BR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD01GD-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD01GD-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD02BR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD02BR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD02CH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD02CH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD03WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD03WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">MOD04BR-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="MOD04BR-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SILV01CH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SILV01CH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SILV03CH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SILV03CH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SILV03WH-DL50GU5.3</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SILV03WH-DL50GU5.3" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">3D-DL40G9-RD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DL40G9-RD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">3D-DL40G9-SQ</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DL40G9-SQ" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">3D-DLL35GU5.3-RD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="3D-DLL35GU5.3-RD" ></span></td>
+				</tr>
+			</table>
+		</div>
+		<div class="content" id="chand">
+			<div class="headline">Люстры и светильники</div>
+			<table>
+				<col width="300px"/>
+				<tr>
+					<td><span class="name">3D03-PL40E27MC</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="3D03-PL40E27MC" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Alegria-PL50GU10-3BG</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Alegria-PL50GU10-3BG" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Alta-CL60E27*2FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Alta-CL60E27*2FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Alta-CL60E27*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Alta-CL60E27*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Anessi-CL60E14*5AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-CL60E14*5AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Anessi-CL60E14*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-CL60E14*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Anessi-WL60E14*1AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*1AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Anessi-WL60E14*1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Anessi-WL60E14*2WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Anessi-WL60E14*2WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Angle-CL60E27*2CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Angle-CL60E27*2CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Angle-CL60E27*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Angle-CL60E27*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Ascona-CL60E27*3SL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Ascona-CL60E27*3SL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Ascona-CL60E27*5SL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Ascona-CL60E27*5SL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Asti-CL40E27*5GDM</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Asti-CL40E27*5GDM" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Aura-CL40E27-3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Aura-CL40E27-3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Aura-CL40E27-5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Aura-CL40E27-5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Bern-CL60E27*2FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Bern-CL60E27*2FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Bern-CL60E27*3FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Bern-CL60E27*3FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Bili-CL60E27*3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Bili-CL60E27*3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Bili-CL60E27*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Bili-CL60E27*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Bozhur-CL60E14*3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Bozhur-CL60E14*3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Brilliant-CL60E14-5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Brilliant-CL60E14-5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Cafetero-CL40E27-1BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Cafetero-CL40E27-1BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Cage-PL40E27*1BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Cage-PL40E27*1BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Cage-PL40E27*1GDM</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Cage-PL40E27*1GDM" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Chester- WL60E14*1AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Chester- WL60E14*1AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Chineli-CL60E14*2GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Chineli-CL60E14*2GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Christi-CL60E14*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Christi-CL60E14*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Christi-CL60E14*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Christi-CL60E14*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Classica-CL60E14*5AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Classica-CL60E14*5AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Classica-WL60E14*1AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Classica-WL60E14*1AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLC0070260E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0070260E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLC0140360E14GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0140360E14GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLC0150360E27GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150360E27GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLC0150360E27WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150360E27WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLC0150560E27GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLC0150560E27GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0010160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0010160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0010560E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0010560E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0020360E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0020360E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0030160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0030160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0040160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0040160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLG0060160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLG0060160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLK0010560E14GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLK0010560E14GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0050560E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0050560E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0070460E14/E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0070460E14/E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLL0100620G4</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLL0100620G4" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLM0020340E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLM0020340E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">CLM0030340E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="CLM0030340E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Cup-PL40E27*1AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Cup-PL40E27*1AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Cup-PL40E27*1AC</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Cup-PL40E27*1AC" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Dracula-CL40E27-5BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Dracula-CL40E27-5BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Foris-CL60E27*3FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Foris-CL60E27*3FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Foris-CL60E27*5FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Foris-CL60E27*5FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Fra-CL60E14*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-CL60E14*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Fra-CL60E14*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-CL60E14*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Fra-Wl60E14*1CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Fra-Wl60E14*1CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Geneva-CL60E14*3FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Geneva-CL60E14*3FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Geneva-CL60E14*5FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Geneva-CL60E14*5FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Gera-CL60E14*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-CL60E14*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Gera-CL60E14*6CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-CL60E14*6CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Gera-Wl60E14*1CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Gera-Wl60E14*1CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Grace-WL60E27*1CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Grace-WL60E27*1CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Gracia-CL60E14*3AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Gracia-CL60E14*3AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Gracia-CL60E14*5AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Gracia-CL60E14*5AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Kadri-CL60E27*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Kadri-CL60E27*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Kadri-CL60E27*4CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Kadri-CL60E27*4CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Kotika-CL60E14*4AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Kotika-CL60E14*4AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Kotika-CL60E14*5AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Kotika-CL60E14*5AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Linci-CL60E14*3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-CL60E14*3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Linci-CL60E14*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-CL60E14*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Linci-WL60E14*1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Linci-WL60E14*1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Lines-PL40E27*1BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Lines-PL40E27*1BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Loris-CL60E27*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Loris-CL60E27*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Loris-WL60E27*1CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Loris-WL60E27*1CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Luch-CL40E14-1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Luch-CL40E14-3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Luch-CL40E14-5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-CL40E14-5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Luch-PL40E14-3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Luch-PL40E14-3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LUCKY-CL60E14*3BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LUCKY-CL60E14*3BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">LUCKY-CL60E14*5BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="LUCKY-CL60E14*5BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Luvr-CL60E14*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Luvr-CL60E14*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Mariposa-CL40E14-4WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Mariposa-CL40E14-4WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Milano-CL60E14*6WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Milano-CL60E14*6WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Moldi-CL60E27*2FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Moldi-CL60E27*2FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Moldi-CL60E27*3FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Moldi-CL60E27*3FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Mona-CL60E27*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-CL60E27*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Mona-CL60E27*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-CL60E27*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Mona-WL60E27*1CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Mona-WL60E27*1CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Neti-PL60E27*1BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Neti-PL60E27*1BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">OREON01-CL60E27*2WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="OREON01-CL60E27*2WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">OREON02-CL60E27*2BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="OREON02-CL60E27*2BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">OREON03-CL60E27*2BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="OREON03-CL60E27*2BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLA0020360E14A</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLA0020360E14A" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLA0040160E27WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLA0040160E27WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLM0040160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0040160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLM0050160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0050160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLM0060160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0060160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLM0070160E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLM0070160E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">PLR0010340E14</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="PLR0010340E14" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Princes-CL60E14*3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Princes-CL60E14*3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Princes-CL60E14*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Princes-CL60E14*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Prison-PL60E27*1BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Prison-PL60E27*1BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rafaelo-CL60E14*5GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rafaelo-CL60E14*5GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rafaelo-WL60E14*2GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rafaelo-WL60E14*2GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Riki-CL60E27*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Riki-CL60E27*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Riki-WL60E27*1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Riki-WL60E27*1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier01-PL60E27*1BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier01-PL60E27*1BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier01-PL60E27*1GR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1GR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier01-PL60E27*1OR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1OR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier01-PL60E27*1PN</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier01-PL60E27*1PN" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier02-PL60E27*1RD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier02-PL60E27*1RD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier02-PL60E27*1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier02-PL60E27*1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier03-PL60E27*1OR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier03-PL60E27*1OR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Rivier03-PL60E27*1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Rivier03-PL60E27*1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Romance-CL60E27-5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Romance-CL60E27-5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Romance-WL60E27-1WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Romance-WL60E27-1WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Salta-CL60E27*1FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Salta-CL60E27*1FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Salta-CL60E27*2FGD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Salta-CL60E27*2FGD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Santafe-CL60E27*3WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Santafe-CL60E27*3WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Santafe-CL60E27*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Santafe-CL60E27*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Servi-PL60E27*1BR</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Servi-PL60E27*1BR" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">SHOT CLC01660E27</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="SHOT CLC01660E27" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Simple-CL40E14*3WN</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Simple-CL40E14*3WN" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Simple-CL40E14*5WN</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Simple-CL40E14*5WN" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Sphera-CL60E14*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Sphera-CL60E14*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Spiri-CL60E14*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Spiri-CL60E14*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Spiri-CL60E14*5CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Spiri-CL60E14*5CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Tuluza-CL60E14*2CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Tuluza-CL60E14*2CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Tuluza-CL60E14*3CH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Tuluza-CL60E14*3CH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Valloni-CL60E27*2AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Valloni-CL60E27*2AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Valloni-CL60E27*3AB</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Valloni-CL60E27*3AB" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Velis-CL60E27*3BG</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Velis-CL60E27*3BG" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Velis-WL60E27*2BG</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Velis-WL60E27*2BG" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Vida-PL40E27-1CP</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Vida-PL40E27-1CP" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Vida-PL40E27-3CP</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Vida-PL40E27-3CP" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Viki-CL60E14*5WH</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Viki-CL60E14*5WH" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WLF0030160E14PBL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WLF0030160E14PBL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">WLK0010260E14GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="WLK0010260E14GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Zephyr-CL40E27-5BL</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Zephyr-CL40E27-5BL" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Zola-CL60E27*5GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Zola-CL60E27*5GD" ></span></td>
+				</tr>
+				<tr>
+					<td><span class="name">Zola-WL60E27*1GD</span></td>
+					<td><span class="pos"><input type="text" size="1" class="snum" id="Zola-WL60E27*1GD" ></span></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
